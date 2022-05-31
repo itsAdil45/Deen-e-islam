@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         paddingVertical: "3%",
         borderRadius: 100
-        , paddingHorizontal: "10%"
+        , paddingHorizontal: "10%",
+
 
     },
     City: {

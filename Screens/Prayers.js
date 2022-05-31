@@ -2,17 +2,25 @@ import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import styles from "./PrayerStyle";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { Shadow } from 'react-native-shadow-2';
 
 export default function Prayers(props) {
 
   const [data, setData] = useState([]);
-  const [today, setToday] = useState([]);
+  const [city, setCity] = useState(props.city);
+
   const loading = true;
   // https://dailyprayer.abdulrcs.repl.co/api/Lahore
   // https://coronavirus-tracker-api.herokuapp.com/v2/locations
+  useEffect(() => {
+    getData()
+
+  }, [2]);
   const getData = async () => {
+    // setCity(props.city)
     const { data } = await axios
-      .get("https://dailyprayer.abdulrcs.repl.co/api/Lahore")
+      .get(`https://dailyprayer.abdulrcs.repl.co/api/Lahore`)
+
 
     // // handle success
     // setdata(response.data);
@@ -20,21 +28,21 @@ export default function Prayers(props) {
     setData(data);
     // setToday(data.today)
     // console.log
-    console.log(data.today)
+
     // console.log("adil console", data);
     // console.log(typeof data);
   }
-  useEffect(() => {
-    getData()
-  }, []);
+
 
 
   return (
 
     <View style={{ flex: 1, backgroundColor: "green" }}>
-      <View style={styles.TitleWrapper} >
-        <Text style={styles.City}>{data.city}</Text>
-      </View>
+      <Shadow viewStyle={{ alignSelf: 'stretch' }} >
+        <View style={styles.TitleWrapper} >
+          <Text style={styles.City}>{props.city}</Text>
+        </View>
+      </Shadow>
 
       <View style={styles.dateWrapper} >
         <Text>Wednesday, 25 May</Text>
@@ -97,7 +105,7 @@ export default function Prayers(props) {
             <Image style={styles.imgSize} source={require("../images/prayers.png")} />
           </View>
           <View>
-            <Text  >Quran</Text>
+            <Text  >{props.city}</Text>
           </View>
         </View>
 
