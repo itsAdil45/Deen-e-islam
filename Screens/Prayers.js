@@ -4,35 +4,34 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Shadow } from 'react-native-shadow-2';
 
-export default function Prayers(props) {
 
+export default function Prayers({ route, navigation }) {
   const [data, setData] = useState([]);
-  const [city, setCity] = useState(props.city);
+  const [city, setCity] = useState("");
+  var i = `Isha'a`;
+
+  // console.log(navigation.route.params)
+  const { item } = route.params;
 
   const loading = true;
   // https://dailyprayer.abdulrcs.repl.co/api/Lahore
   // https://coronavirus-tracker-api.herokuapp.com/v2/locations
+
   useEffect(() => {
     getData()
 
-  }, [2]);
+  }, []);
+
   const getData = async () => {
     // setCity(props.city)
+
     const { data } = await axios
-      .get(`https://dailyprayer.abdulrcs.repl.co/api/Lahore`)
-
-
-    // // handle success
-    // setdata(response.data);
-    // console.log(data);
+      .get(`https://dailyprayer.abdulrcs.repl.co/api/${item}`)
     setData(data);
-    // setToday(data.today)
-    // console.log
 
-    // console.log("adil console", data);
-    // console.log(typeof data);
+
+
   }
-
 
 
   return (
@@ -40,7 +39,7 @@ export default function Prayers(props) {
     <View style={{ flex: 1, backgroundColor: "green" }}>
       <Shadow viewStyle={{ alignSelf: 'stretch' }} >
         <View style={styles.TitleWrapper} >
-          <Text style={styles.City}>{props.city}</Text>
+          <Text style={styles.City}>{"lahore"}</Text>
         </View>
       </Shadow>
 
@@ -97,17 +96,17 @@ export default function Prayers(props) {
             <Image style={styles.imgSize} source={require("../images/tasbeeh.png")} />
           </View>
           <View>
-            <Text  >Quran</Text>
+            <Text  >Tasbeeh</Text>
           </View>
         </View>
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Duas")}>
           <View style={styles.imgWrapper}>
             <Image style={styles.imgSize} source={require("../images/prayers.png")} />
           </View>
           <View>
-            <Text  >{props.city}</Text>
+            <Text  >Duas</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
 
       </View>
