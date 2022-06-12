@@ -8,7 +8,7 @@ import { Shadow } from 'react-native-shadow-2';
 export default function Prayers({ route, navigation }) {
   const [data, setData] = useState([]);
   const [city, setCity] = useState("");
-  var i = `Isha'a`;
+  const [ishaTime, setIsha] = useState("");
 
   // console.log(navigation.route.params)
   const { item } = route.params;
@@ -27,6 +27,10 @@ export default function Prayers({ route, navigation }) {
 
     const { data } = await axios
       .get(`https://dailyprayer.abdulrcs.repl.co/api/${item}`)
+    var mystring = JSON.stringify(data.today);
+    setIsha(mystring.slice(92, 97))
+    // ishaTime = mystring.slice(92, 97)
+    console.log(ishaTime)
     setData(data);
 
 
@@ -36,12 +40,12 @@ export default function Prayers({ route, navigation }) {
 
   return (
 
-    <View style={{ flex: 1, backgroundColor: "green" }}>
-      <Shadow viewStyle={{ alignSelf: 'stretch' }} >
-        <View style={styles.TitleWrapper} >
-          <Text style={styles.City}>{"lahore"}</Text>
-        </View>
-      </Shadow>
+    <View style={{ flex: 1, backgroundColor: "#204B38" }}>
+
+      <View style={styles.TitleWrapper} >
+        <Text style={styles.City}>{item}</Text>
+      </View>
+
 
       <View style={styles.dateWrapper} >
         <Text>Wednesday, 25 May</Text>
@@ -51,7 +55,8 @@ export default function Prayers({ route, navigation }) {
       {data.today == null ? (
         <Text>loading....</Text>
       ) : (
-        <View style={styles.timeWrapper} >
+
+        <View style={styles.timeWrapper}  >
           <Text style={styles.timeSection}>Prayers Timings</Text>
           <TouchableOpacity style={styles.prayers}>
             <Text>Fajr</Text>
@@ -72,13 +77,14 @@ export default function Prayers({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity style={styles.prayers}>
             <Text>Isha'a</Text>
-            <Text>{data.today.Maghrib}</Text>
+            <Text>{ishaTime}</Text>
           </TouchableOpacity>
         </View>
 
+
       )}
 
-      <Text style={styles.timeSection}>Shortcuts</Text>
+      <Text style={[styles.shortcutsSectionHeading]}>Shortcuts</Text>
       <View style={styles.shortcuts}>
 
 
@@ -87,7 +93,7 @@ export default function Prayers({ route, navigation }) {
             <Image style={styles.imgSize} source={require("../images/book.png")} />
           </View>
           <View>
-            <Text  >Quran</Text>
+            <Text style={styles.shortcutsSectionText}  >Quran</Text>
           </View>
         </View>
 
@@ -96,7 +102,7 @@ export default function Prayers({ route, navigation }) {
             <Image style={styles.imgSize} source={require("../images/tasbeeh.png")} />
           </View>
           <View>
-            <Text  >Tasbeeh</Text>
+            <Text style={styles.shortcutsSectionText} >Tasbeeh</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Duas")}>
@@ -104,7 +110,7 @@ export default function Prayers({ route, navigation }) {
             <Image style={styles.imgSize} source={require("../images/prayers.png")} />
           </View>
           <View>
-            <Text  >Duas</Text>
+            <Text style={styles.shortcutsSectionText} >Duas</Text>
           </View>
         </TouchableOpacity>
 

@@ -1,7 +1,22 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./DuasStyle"
+import { getDatabase, ref, onValue } from 'firebase/database';
 export default function Duas({ navigation }) {
+    const [data, setData] = useState("")
+    function Data() {
+        const db = getDatabase();
+        const reference = ref(db, '/Appdata/Duas');
+        onValue(reference, (snapshot) => {
+            // const highscore = snapshot.val().highscore;
+            setData(snapshot.val());
+            // console.log(data[0].title)
+        });
+    }
+
+    useEffect(() => Data(), [])
+
+
     const Duas = [
         {
             key: 0,
@@ -16,7 +31,6 @@ export default function Duas({ navigation }) {
             title: "سونے كي دعا",
             dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
             urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
         },
         {
             key: 2,
@@ -137,19 +151,22 @@ export default function Duas({ navigation }) {
 
     ]
 
-    return (
-        <View>
-            <Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
-            </Text>
 
+    return (
+
+        <View style={styles.container}>
+            {/* <Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
+            </Text> */}
             <FlatList
-                data={Duas}
+                ListHeaderComponent={<Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
+                </Text>}
+                data={data}
                 renderItem={({ item }) => (
 
                     <View style={styles.nameWrapper}>
 
                         <TouchableOpacity onPress={() => navigation.navigate("DuaTranslation", { dua: item.dua, urdu: item.urdu })}>
-                            <Text  >{item.title}</Text>
+                            <Text style={styles.titleStyle}>{item.title}</Text>
                         </TouchableOpacity>
                     </View>)}
             />

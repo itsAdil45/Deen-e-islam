@@ -9,14 +9,27 @@ import DuaTranslation from "./Screens/DuaTranslation";
 import { NavigationContainer } from '@react-navigation/native';
 import Stack from "./Navigation/Stack";
 import { createStackNavigator } from '@react-navigation/stack';
+import { initializeApp } from 'firebase/app';
 const stack = createStackNavigator();
 
 export default function App() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPEMslkLZtRJPcTYQxqQtkY0yggqOolmo",
+    authDomain: "deen-e-islam-f8024.firebaseapp.com",
+    projectId: "deen-e-islam-f8024",
+    storageBucket: "deen-e-islam-f8024.appspot.com",
+    messagingSenderId: "1057161338756",
+    appId: "1:1057161338756:web:7c85b5725e555ceffd07d1",
+    measurementId: "G-SSJ5M1KQKN"
+  };
 
+  initializeApp(firebaseConfig);
   return (
 
     <NavigationContainer>
-      <stack.Navigator >
+      <stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
         <stack.Screen name="Home" component={Home} />
         <stack.Screen name="Prayers" component={Prayers} />
         <stack.Screen name="Duas" component={Duas} />
