@@ -1,171 +1,63 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from "./DuasStyle"
 import { getDatabase, ref, onValue } from 'firebase/database';
 export default function Duas({ navigation }) {
     const [data, setData] = useState("")
+    const [masterdata, setMasterData] = useState("");
+    const [search, setSearch] = useState("")
     function Data() {
         const db = getDatabase();
         const reference = ref(db, '/Appdata/Duas');
         onValue(reference, (snapshot) => {
             // const highscore = snapshot.val().highscore;
             setData(snapshot.val());
+            setMasterData(snapshot.val())
             // console.log(data[0].title)
         });
     }
 
     useEffect(() => Data(), [])
 
-
-    const Duas = [
-        {
-            key: 0,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هو"
-
-        },
-
-        {
-            key: 1,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-        },
-        {
-            key: 2,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 3,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 4,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 5,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 10,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-
-        {
-            key: 11,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 21,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 31,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 41,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 51,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
+    const searchFilter = (text) => {
+        if (text) {
+            const newData = masterdata.filter((item) => {
+                const itemData = item.title ? item.title.toUpperCase() : "".toUpperCase()
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setData(newData);
+            setSearch(text);
         }
-        ,
-        {
-            key: 233,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-
-        {
-            key: 14,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 344,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 32,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 44,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
-        },
-        {
-            key: 55,
-            title: "سونے كي دعا",
-            dua: "اَللّٰهُمَّ بِاسْمِكَ اَمُوْ تُ وَاَحْيٰي",
-            urdu: "اے اﷲ تعاليٰ ميں تيرے نام پر مرتا هوں اور جيتا هوں"
-
+        else {
+            setData(masterdata);
+            setSearch(text);
         }
+    }
 
-
-    ]
 
 
     return (
 
         <View style={styles.container}>
-            {/* <Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
-            </Text> */}
             <FlatList
-                ListHeaderComponent={<Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
-                </Text>}
+                ListHeaderComponent={
+                    <View>
+                        <Text style={styles.title}>مسنون دعائیں اردو ترجمہ کے ساتھ
+                        </Text>
+                        <View style={styles.searchBarWrapper}>
+                            <TextInput placeholderTextColor="#F3B191" placeholder='تلاش کریں' value={search} onChangeText={(text) => { searchFilter(text) }} style={styles.searchBar} />
+                        </View>
+                    </View>
+
+                }
+
                 data={data}
                 renderItem={({ item }) => (
 
                     <View style={styles.nameWrapper}>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("DuaTranslation", { dua: item.dua, urdu: item.urdu })}>
+                        <TouchableOpacity onPress={() => navigation.navigate("DuaTranslation", { dua: item.dua, urdu: item.urdu, title: item.title })}>
                             <Text style={styles.titleStyle}>{item.title}</Text>
                         </TouchableOpacity>
                     </View>)}

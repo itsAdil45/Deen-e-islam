@@ -23,11 +23,25 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: "white",
         marginVertical: 3,
+
         fontSize: 16,
         fontWeight: "500"
 
     }
     ,
+    searchBar: {
+        marginTop: 10,
+        color: "#F3B191",
+        marginHorizontal: 22,
+        marginVertical: 15,
+    },
+    searchBarWrapper: {
+        borderWidth: 1,
+        borderRadius: 25,
+        borderColor: "white",
+        marginTop: 10,
+        marginHorizontal: 10
+    }
 
 
 

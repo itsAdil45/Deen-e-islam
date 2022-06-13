@@ -2,11 +2,10 @@ import { StyleSheet } from "react-native"
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
         backgroundColor: "#204B38"
     },
     Subcontainer: {
-        marginTop: "50%",
+
         marginHorizontal: 25
     }
     , arabic: {
@@ -31,8 +30,21 @@ const styles = StyleSheet.create({
         color: "#F3B191",
         fontSize: 20
 
-    }
+    },
+    title: {
+        textAlign: "center",
+        fontSize: 22,
+        color: "red",
+        fontWeight: "800"
 
+    },
+    TitleWrapper: {
+        marginTop: "30%",
+        marginBottom: "10%",
+        backgroundColor: "#F6D2BE",
+        paddingVertical: "3%",
+        borderWidth: 2,
+    },
 
 
 
