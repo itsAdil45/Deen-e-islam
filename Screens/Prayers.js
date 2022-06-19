@@ -3,14 +3,46 @@ import styles from "./PrayerStyle";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Shadow } from 'react-native-shadow-2';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, onValue } from 'firebase/database';
-
+import { Storage } from 'expo-storage'
 export default function Prayers({ route, navigation }) {
   const [data, setData] = useState([]);
   const [namaz, setNamaz] = useState([]);
   const [ishaTime, setIsha] = useState("");
+  const [time, setTime] = useState(null);
   const { item } = route.params;
   const loading = true;
+
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem('44', data.today.Maghrib)
+      await AsyncStorage.setItem('11', data.today.Fajr)
+      await AsyncStorage.setItem('22', data.today.Dhuhr)
+      await AsyncStorage.setItem('33', data.today.Asr)
+      await AsyncStorage.setItem('55', ishaTime)
+    } catch (e) {
+      // saving error
+    }
+  }
+
+  storeData();
+
+
+
+  useEffect(() => {
+    getCurrentTime();
+    setTime(getCurrentTime());
+  }, [2]);
+
+  const getCurrentTime = () => {
+    let today = new Date();
+    let hours = (today.getHours() < 10 ? '0' : '') + today.getHours();
+    let minutes = (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
+    // let seconds = (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+    return hours + ':' + minutes;
+  }
+
 
   function Data() {
     const db = getDatabase();
@@ -27,17 +59,16 @@ export default function Prayers({ route, navigation }) {
   // https://coronavirus-tracker-api.herokuapp.com/v2/locations
 
   useEffect(() => {
-    getData(), Data()
+    getData(), Data();
 
   }, []);
 
+
   const getData = async () => {
-    // setCity(props.city)
     const { data } = await axios
       .get(`https://dailyprayer.abdulrcs.repl.co/api/${item}`)
     var mystring = JSON.stringify(data.today);
     setIsha(mystring.slice(92, 97))
-    // ishaTime = mystring.slice(92, 97)
 
     setData(data);
 
@@ -55,7 +86,7 @@ export default function Prayers({ route, navigation }) {
 
       <View style={styles.dateWrapper} >
         <Text>Wednesday, 25 May</Text>
-        <Text>23 Shawwal 1443</Text>
+        <Text>{time}</Text>
       </View>
 
       {data.today == null ? (
@@ -133,3 +164,18 @@ export default function Prayers({ route, navigation }) {
     </View>
   );
 }
+
+// async function schedulePushNotification() {
+
+//   await Notifications.scheduleNotificationAsync({
+//     content: {
+//       title: "Namaz Time 📬",
+//       body: 'Ao namaz ki taraf',
+
+//     },
+//     trigger: {
+//       seconds: 2,
+//       repeats: true
+//     },
+//   });
+// }

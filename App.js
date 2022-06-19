@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect, useRef } from 'react';
 import Prayers from "./Screens/Prayers";
+
 import Home from "./Screens/Home";
 import Duas from "./Screens/Duas";
 import PrayerDetails from "./Screens/PrayerDetails";
@@ -11,6 +12,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { initializeApp } from 'firebase/app';
 import * as Notifications from 'expo-notifications';
 const stack = createStackNavigator();
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { set } from "firebase/database";
+
+
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -24,24 +30,29 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const a = 1
-  const b = 1
-  //  useEffect(async () => await schedulePushNotification(), [])
-  // useEffect(() =>
-  //   Notifications.scheduleNotificationAsync({
-  //     content: {
-  //       title: "Namaz Time 📬",
-  //       body: 'Ao namaz ki taraf',
 
-  //     },
-  //     trigger: {
-  //       seconds: 12,
-  //       repeats: true
+  MaghribNotification();
+  IshaNotification();
+  FajrNotification();
+  AsrNotification();
+  DhohrNotification();
 
-  //     },
-  //   })
-  //   , [0])
+  const getmyData = async () => {
+    try {
+      const magribh = await AsyncStorage.getItem('@1')
+
+      if (magribh !== null) {
+        // value previously stored
+        console.log("storage ", magribh);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  }
+
+
   useEffect(() => {
+    getmyData();
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
@@ -93,21 +104,6 @@ export default function App() {
 }
 
 
-function schedulePushNotification() {
-  Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Namaz Time 📬",
-      body: 'Ao namaz ki taraf',
-
-    },
-    trigger: {
-      seconds: 2,
-      repeats: true
-
-    },
-  });
-}
-
 async function registerForPushNotificationsAsync() {
   let token;
   if (Platform.OS === 'android') {
@@ -130,3 +126,102 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+
+
+
+async function MaghribNotification() {
+  const magribh = await AsyncStorage.getItem('44')
+  const hour = magribh.slice(0, 2)
+  const minutes = magribh.slice(3, 5)
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Namaz Time 📬",
+      body: 'Namaz e Magrib ka waqat',
+    },
+    trigger: {
+      hour: Number(hour),
+      minute: Number(minutes),
+      repeats: true
+    },
+  });
+}
+
+
+const IshaNotification = async () => {
+
+  const isha = await AsyncStorage.getItem('55')
+  const hour = isha.slice(0, 2)
+  const minutes = isha.slice(3, 5)
+  console.log(isha);
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Namaz Time 📬",
+      body: 'Namaz e Isha ka waqat',
+    },
+    trigger: {
+      hour: Number(hour),
+      minute: Number(minutes),
+      repeats: true
+    },
+  });
+
+}
+
+async function AsrNotification() {
+  const Asr = await AsyncStorage.getItem('33')
+  const hour = Asr.slice(0, 2)
+  const minutes = Asr.slice(3, 5)
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Namaz Time 📬",
+      body: 'Namaz e Asr ka waqat',
+    },
+    trigger: {
+      hour: Number(hour),
+      minute: Number(minutes),
+      repeats: true
+    },
+  });
+}
+
+async function DhohrNotification() {
+  const Dhuhr = await AsyncStorage.getItem('22')
+  const hour = Dhuhr.slice(0, 2)
+  const minutes = Dhuhr.slice(3, 5)
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Namaz Time 📬",
+      body: 'Namaz e Dhuhr ka waqat',
+    },
+    trigger: {
+      hour: Number(hour),
+      minute: Number(minutes),
+      repeats: true
+    },
+  });
+}
+
+
+async function FajrNotification() {
+  const Dhuhr = await AsyncStorage.getItem('11')
+  const hour = Dhuhr.slice(0, 2)
+  const minutes = Dhuhr.slice(3, 5)
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Namaz Time 📬",
+      body: 'Namaz e Fajr ka waqat',
+    },
+    trigger: {
+      hour: Number(hour),
+      minute: Number(minutes),
+      repeats: true
+    },
+  });
+}
+
+
+
+
